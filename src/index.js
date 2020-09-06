@@ -17,6 +17,7 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources', 'views'));
 
 // global middlewares
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('dev'));
 
 app.get('/', (req, res) => res.render('home'));

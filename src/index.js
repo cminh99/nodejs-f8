@@ -10,6 +10,7 @@ const app = express();
 
 const siteRoutes = require('./routes/site.route');
 const newsRoutes = require('./routes/news.route');
+const courseRoutes = require('./routes/course.route');
 
 // Setup template engine
 app.engine(
@@ -28,5 +29,6 @@ app.use(morgan('dev'));
 // Routes
 app.use('/', siteRoutes);
 app.use('/news', newsRoutes);
+app.use('/courses', courseRoutes);
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

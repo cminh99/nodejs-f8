@@ -1,3 +1,5 @@
+require('./config/db').connect();
+
 const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
@@ -6,8 +8,8 @@ const port = 3000;
 
 const app = express();
 
-const homeRoute = require('./routes/home.route');
-const newsRoute = require('./routes/news.route');
+const siteRoutes = require('./routes/site.route');
+const newsRoutes = require('./routes/news.route');
 
 // Setup template engine
 app.engine(
@@ -24,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('dev'));
 
 // Routes
-app.use('/', homeRoute);
-app.use('/news', newsRoute);
+app.use('/', siteRoutes);
+app.use('/news', newsRoutes);
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

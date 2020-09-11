@@ -3,6 +3,9 @@ const router = express.Router();
 
 const controller = require('../controllers/course.controller');
 
-router.get('/:slug', controller.detailCourse);
+router.get('/create', controller.create);
+router.get('/:slug', controller.view);
+
+router.post('/store', controller.store);
 
 module.exports = router;

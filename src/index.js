@@ -23,8 +23,10 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources', 'views'));
 
 // Global middlewares
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('dev'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Routes
 app.use('/', siteRoutes);

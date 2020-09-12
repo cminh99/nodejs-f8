@@ -1,6 +1,13 @@
 <div class="mt-5">
-  <h3 class="mb-4">Quản lý khoá học</h3>
-  <table class="table table-sm">
+  <div class="d-flex">
+    <h3 class="mb-4">Quản lý khoá học</h3>
+    <div class="ml-auto">
+      <a href="/courses/create">Tạo mới</a>
+      <span class="mx-2">|</span>
+      <a href="/me/trash/courses">Thùng rác</a>
+    </div>
+  </div>
+  <table class="table">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -11,29 +18,37 @@
       </tr>
     </thead>
     <tbody>
-      {{#each courses}}
-      <tr>
-        <th>{{sum @index 1}}</th>
-        <td>{{this.name}}</td>
-        <td>{{this.level}}</td>
-        <td>{{this.createdAt}}</td>
-        <td>
-          <a
-            href="/courses/edit/{{this._id}}"
-            class="btn btn-sm btn-link">
-            Sửa
-          </a>
-          <a
-            href=""
-            class="btn btn-sm btn-link"
-            data-id="{{this._id}}"
-            data-toggle="modal"
-            data-target="#confirm-delete-modal">
-            Xoá
-          </a>
-        </td>
-      </tr>
-      {{/each}}
+      {{#if courses}}
+        {{#each courses}}
+          <tr>
+            <th>{{sum @index 1}}</th>
+            <td>{{this.name}}</td>
+            <td>{{this.level}}</td>
+            <td>{{this.createdAt}}</td>
+            <td>
+              <a
+                href="/courses/edit/{{this._id}}"
+                class="btn btn-sm btn-link">
+                Sửa
+              </a>
+              <a
+                href=""
+                class="btn btn-sm btn-link"
+                data-id="{{this._id}}"
+                data-toggle="modal"
+                data-target="#confirm-delete-modal">
+                Xoá
+              </a>
+            </td>
+          </tr>
+        {{/each}}
+      {{else}}
+        <tr>
+          <td colspan="5" class="text-center">
+            Bạn chưa đăng khóa học nào. <a href="/courses/create">Đăng khóa học mới</a> ngay!
+          </td>
+        </tr>
+      {{/if}}
     </tbody>
   </table>
 </div>
@@ -49,7 +64,8 @@
         </button>
       </div>
       <div class="modal-body">
-        Bạn chắc chắn muốn xoá khoá học này?
+        <p>Bạn muốn xoá khoá học này?</p>
+        <p>Khóa học này sẽ được đưa vào thùng rác. Bạn có thể khôi phục khi bạn muốn!</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-danger" id="delete-course-btn">Xóa</button>
@@ -59,7 +75,6 @@
   </div>
 </div>
 
-{{!-- Delete hidden form --}}
 <form id="delete-course-form" method="POST"></form>
 
 <script>

@@ -1,5 +1,8 @@
 <div class="mt-5">
-  <h3 class="mb-4">Cập nhật khoá học</h3>
+  <div class="d-flex">
+    <h3 class="mb-4">Cập nhật khóa học</h3>
+    <a class="ml-auto" href="/me/stored/courses">Danh sách khóa học</a>
+  </div>
   <form action="/courses/update/{{course._id}}?_method=PUT" method="POST">
     <div class="form-group">
       <label for="name">Tên khoá học</label>

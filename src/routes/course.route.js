@@ -7,6 +7,7 @@ router.get('/create', controller.create);
 router.post('/store', controller.store);
 
 router.post('/handle-stored-form-actions', controller.handleStoredFormActions);
+router.post('/handle-trash-form-actions', controller.handleTrashFormActions);
 
 router.get('/edit/:id', controller.edit);
 router.put('/update/:id', controller.update);

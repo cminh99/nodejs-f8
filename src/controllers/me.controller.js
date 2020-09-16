@@ -19,7 +19,8 @@ class MeController {
     Course.findDeleted({})
       .then((courses) =>
         res.render('me/trash_courses', {
-          courses: multipleDocuments(courses)
+          courses: multipleDocuments(courses),
+          trashCount: courses.length
         })
       )
       .catch(next);

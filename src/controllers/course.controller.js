@@ -66,12 +66,33 @@ class CourseController {
       .catch(next);
   }
 
-  // [POST] /courses/handle-form-actions
+  // [POST] /courses/handle-stored-form-actions
   handleStoredFormActions(req, res, next) {
     const body = { ...req.body };
     switch (body.action) {
       case 'delete':
         Course.delete({ _id: { $in: body.courseIDs } })
+          .then(() => res.redirect('back'))
+          .catch(next);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  // [POST] /courses/handle-trash-form-actions
+  handleTrashFormActions(req, res, next) {
+    const body = { ...req.body };
+    switch (body.action) {
+      case 'restore':
+        Course.restore({ _id: { $in: body.courseIDs } })
+          .then(() => res.redirect('back'))
+          .catch(next);
+        break;
+
+      case 'forceDelete':
+        Course.deleteMany({ _id: { $in: body.courseIDs } })
           .then(() => res.redirect('back'))
           .catch(next);
         break;

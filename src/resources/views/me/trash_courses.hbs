@@ -1,4 +1,4 @@
-<form class="mt-4" id="container-form" action="/courses/handle-trash-form-actions" method="POST">
+<form class="mt-4" id="form-container" action="/courses/handle-trash-form-actions" method="POST">
   <div class="d-flex align-items-center">
     <h3>Khóa học đã xóa</h3>
     <div class="ml-auto">
@@ -22,9 +22,7 @@
           <option value="forceDelete">Xóa vĩnh viễn</option>
         </select>
         <div class="input-group-append">
-          <button class="btn btn-secondary disabled" id="btn-exec-options" type="submit">
-            OK
-          </button>
+          <button class="btn btn-secondary" id="btn-submit-form" type="submit" disabled>OK</button>
         </div>
       </div>
     </div>
@@ -105,60 +103,61 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    var formContainer = $('#form-container');
+    var btnSubmitForm = $('#btn-submit-form');
+    var checkboxSelectAllItems = $('#checkbox-select-all-items');
+    var listCourseIDs = $('input[name="courseIDs[]"]');
+    var modalConfirmDelete = $('#modal-confirm-delete');
+    var btnDeleteCourse = $('#btn-delete-course');
+    var btnRestoreCourse = $('.btn-restore');
+    var formDeleteCourse = $('#form-delete-course');
+    var formRestoreCourse = $('#form-restore-course');
     var courseId;
-    var checkboxAll = $('#checkbox-select-all-items');
-    var courseItemCheckbox = $('input[name="courseIDs[]"]');
 
     // Get the course's ID in the modal
-    $('#modal-confirm-delete').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget);
+    modalConfirmDelete.on('show.bs.modal', function (e) {
+      var button = $(e.relatedTarget);
       courseId = button.data('id');
     });
 
-    // Set action=[URL] and submit the form to delete the course
-    $('#btn-delete-course').on('click', function(e) {
-      e.preventDefault();
-      $('#form-delete-course').attr('action', `/courses/delete/force/${courseId}?_method=DELETE`);
-      $('#form-delete-course').submit();
+    // Set action to force delete the course
+    btnDeleteCourse.click(function() {
+      formDeleteCourse.attr('action', `/courses/delete/force/${courseId}?_method=DELETE`);
+      formDeleteCourse.submit();
     });
 
-    // Restore deleted courses
-    $('.btn-restore').on('click', function(e) {
+    // Set action to restore deleted courses
+    btnRestoreCourse.click(function(e) {
       e.preventDefault();
       courseId = $(this).data('id');
-      $('#form-restore-course').attr('action', `/courses/restore/${courseId}?_method=PATCH`);
-      $('#form-restore-course').submit();
+      formRestoreCourse.attr('action', `/courses/restore/${courseId}?_method=PATCH`);
+      formRestoreCourse.submit();
     });
 
     // Checkbox all is checked
-    checkboxAll.change(function() {
+    checkboxSelectAllItems.change(function() {
       var isCheckedAll = $(this).prop('checked');
-      courseItemCheckbox.prop('checked', isCheckedAll);
-      renderCheckAllSubmitBtn();
+      listCourseIDs.prop('checked', isCheckedAll);
+      renderBtnSubmitForm();
     });
 
     // Course item checkbox is checked
-    courseItemCheckbox.change(function() {
-      var isCheckedAll = courseItemCheckbox.length === $('input[name="courseIDs[]"]:checked').length;
-      checkboxAll.prop('checked', isCheckedAll);
-      renderCheckAllSubmitBtn();
-    });
+    listCourseIDs.change(function() {
+      var isCheckedAll = listCourseIDs.length === $('input[name="courseIDs[]"]:checked').length;
 
-    $('#btn-exec-options').on('submit', function(e) {
-      var isSubmitable = !$(this).hasClass('disabled');
-      if (!isSubmitable) {
-        e.preventDefault();
-      }
+      checkboxSelectAllItems.prop('checked', isCheckedAll);
+      renderBtnSubmitForm();
     });
 
     // Re-render the executable button for check all
-    function renderCheckAllSubmitBtn() {
+    function renderBtnSubmitForm() {
       var checkedCount = $('input[name="courseIDs[]"]:checked').length;
-      var btnExecOptions = $('#btn-exec-options');
+      var btnSubmitForm = $('#btn-submit-form');
 
       (checkedCount > 0) ?
-        btnExecOptions.removeClass('disabled') :
-        btnExecOptions.addClass('disabled');
+        btnSubmitForm.attr('disabled', false) :
+        btnSubmitForm.attr('disabled', true);
     };
+
   });
 </script>
